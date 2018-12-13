@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+
+		<title>
+			Simple Quiz
+		</title>
+		<style type="text/css">
+			/*<![CDATA[*/
+			html,body
+			{
+				font-family: Verdana;
+				color: white;
+				background-color: lightblue;
+			}
+
+			.wrapper
+			{
+				///margin: auto;
+				///max-width: 1024px;
+			}
+
+			div#test
+			{
+				text-align: left;
+				display: block;
+				border: 2px solid #3c86c4;
+				padding: 10px 34px 34px 34px;
+				background-color:purple;
+				///width: 50%;
+				height: 500px;
+				box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			}
+
+			#question
+			{
+				background-color:black;
+				border-radius: 4px;
+				border: 1px solid #ccc;
+				padding: 12px;
+				font-size: 15px;
+				font-weight: 700;
+				letter-spacing: 3px;
+				text-align: center;
+			}
+
+				#questionn
+			{
+				background-color:white;
+				border-radius: 4px;
+				color: black;
+				padding: 12px;
+				font-size: 15px;
+				font-weight: 200;
+				letter-spacing: 1px;
+			}
+
+
+			.answer
+			{
+				margin: 12px;
+				cursor: pointer;
+			}
+
+			.status h2
+			{
+				display: inline;
+				background-color: #eee;
+				padding: 8px;
+			}
+
+			.status-container h2
+			{
+				padding: 20px;
+				background-color: #555555;;
+				text-align: center;
+				border-radius: 12px;
+				border: 1px solid #000;
+				color: #fff;
+			}
+
+			#p
+			{
+				vertical-align: middle;
+			}
+
+			.btn
+			{
+				background-color: #5EB962;
+				border: none;
+				color: white;
+				padding: 15px 32px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 16px;
+				border-radius: 9px;
+				transition-duration: 0.4s;
+			}
+
+			.btn:hover
+			{
+				background-color: black;
+			}
+
+			#finish-text
+			{
+				text-align: center;
+				color: #fff;
+				background-color: #555;
+				padding: 16px;
+				border: 1px solid #000;
+				border-radius: 12px;
+				font-size: 24px;
+			}
+
+			/*]]>*/
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<center>
+				<div id="test">
+					
+					<div class="status-container">
+						<h2 id="status">
+						
+						</h2>
+					</div>
+					<p id="line">
+					</p>
+										<p id="questionn">
+										</p>
+					<p id="question">
+					</p>
+
+					<div id="answers">
+					</div>
+				</div>
+			</center>
+		</div>
+		<script type="text/javascript">
+			//<![CDATA[
+
+
+/// all the questions are written in just one variable
+			var questions =[
+				["La representation mentale generale et abstraite d'un objet est:", "Objet", "POO" , "Concept" ,"C"],
+				["Quelque chose virtuelle ou abstraite a partir de laquelle on extrait des objets", "Destructeur", "Objet Referent", "Classe", "C"],
+				["Que veut dire WWW", "Wan Wide World." ,"World Wide Web" ,"Wide Wan Web" ,"B"],
+				["Une liste de champs donnee qui caracterise letat des objets de la classe pendant lexecution", "Composant Dynamique" ,"Composant Statistique" ,"Referent" ,"B"],
+				["Lequel est un editeur de texte", "Notepad." ,"Sublime Text" ,"MS-Word" ,"C"],
+				["Une suite dinstruction qui implique la demarche a suivre pour resoudre un probleme est:", "Un programme" ,"Un algorithme" ,"La programmation" ,"B"],
+				["Lensemble des regles a respecter pour que deux ou plusieurs entites puissent echanger des informations", "Systeme d'exploitation" ,"Appel system" ,"Interface" ,"C"],
+				["Ils permettent de modeliser les peripheriques qui sont adressables par bloc", "Fichier Speciaux Blocs" ,"Fichier Speciaux caracteres" ,"Terminal" ,"A"],
+				["Le temps de reponse depend de :", "La memoire Centrale" ,"Lunite Centrale" ,"La memoire de masse" ,"B"],
+				["Une entite dynamique associe a la suite des actions realisees", "Un programme" ,"Un processus" ,"monoprocesseur" ,"B"]
+				
+
+			];
+
+			//]]>
+		</script>
+		<script type="text/javascript">
+			//<![CDATA[
+/// we write the apparence of the program in html and format each id in the css
+/// Test has two roles: in HTML it is the body of the program
+// We create a variable with it in JS (the variable use its space in the HTML) - 
+//which we change its content to show result at last / So if we just create another space to generate the result at the end we can disable test
+
+
+// we change test content at the end to display two things
+//Status-container is just the background of the header text (only work with in css)
+//Status: 
+
+///qnumb
+
+//***************************************************************************************
+
+			var qnumb = 0; //which means question begins with the first row, increment it will send it to second
+			//var textStatus;
+			var correct = 0;
+			var A1,A2,A3; // these variable are create to hold the position of each answer in a row
+			///var mine = 0;
+
+			function displayQuiz()
+			{
+				var test = document.getElementById("test"); // Give result and show button at last
+				textStatus = document.getElementById("status")
+				question = document.getElementById("question");
+				answers = document.getElementById("answers");
+				
+				//mine+=1;
+
+				if(qnumb >= questions.length)
+				{
+					//qnumb = questions.length - 1;
+					test.innerHTML = "<p id='finish-text'>You got " + correct + " out of  " + questions.length + " questions correct<\/p><br />";
+					test.innerHTML += "<button class=\"btn\" onclick=\"reloadQuiz();\">  Restart The Test  <\/button>";
+				}
+				/// textStatus is the header
+				textStatus.innerHTML = "<img id='p' src=\"images\\question.png\"> Question " + (qnumb+1) + " sur " + questions.length;
+				/// We change question content using the array and index of question list
+				question.innerText = questions[qnumb][0];
+				questionn.innerHTML = " This test is being created by Ricardo Paul - for learning purpose";
+				//indicate what word to show in the multiple answer
+				A1 = questions[qnumb][1]; // Question A
+				A2 = questions[qnumb][2]; // Question B \"  \"
+				A3 = questions[qnumb][3]; // Question C
+///				A4 = questions[qnumb][4];
+
+				/// Once we're done we display them
+				/// We have to empty the answers containers each time
+				answers.innerHTML = "";
+				answers.innerHTML += "<input class=\"answer\" type=\"radio\" name=\"answers\" value=\"A\" checked > " + A1 + "</input> <br />";
+				answers.innerHTML += "<input class=\"answer\" type=\"radio\" name=\"answers\" value=\"B\"> " + A2 + "</input><br />";
+				answers.innerHTML += "<input class=\"answer\" type=\"radio\" name=\"answers\" value=\"C\"> " + A3 + "</input><br />";
+				answers.innerHTML += "<br />";
+				answers.innerHTML += "<center>"	+"<button class=\"btn\" align=\"center\" onclick=\"checkAnswer();\">Submit Answer<\/button>" +"</center>";
+				qnumb+=1;
+				//INC questions.
+				
+				
+			}
+
+
+///***************************************************************
+			function checkAnswer()
+			{
+				/// The variable all_answers gather all the answers
+				/// The variable ans gather the questions the user has selected
+				var all_answers = document.getElementsByName("answers");
+				var ans;
+				var I = 0;
+
+				//Check for correct question.
+				for(I = 0;I < all_answers.length;I++)
+				{
+					if(all_answers[I].checked == true)
+					{
+						ans = all_answers[I].value;
+					}
+				}
+
+				if(questions[qnumb-1][4] == ans)
+				{
+					correct+=1;
+				}
+
+				//Show next questions
+				displayQuiz();
+				//reloadQuiz();
+
+			}
+
+			qPos = 0;
+			test = "";
+			textStatus = "";
+			correct = 0;
+			A1 = "";
+			A2 = "";
+			A3 = "";
+
+//****************************************************************
+			displayQuiz();
+
+			function reloadQuiz()
+			{
+				location.reload();
+			}
+
+		</script>
+	
+	</body>
+</html>
